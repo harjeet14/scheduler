@@ -2,6 +2,7 @@ import React from "react";
 import DayList from "./DayList";
 import "components/Application.scss";
 import { useState } from "react";
+import Appointment from "components/Appointment"
 const days = [
   {
     id: 1,
@@ -19,8 +20,63 @@ const days = [
     spots: 0,
   },
 ];
+const appointments = [
+  {
+    id: 1,
+    time: "12pm",
+  },
+  {
+    id: 2,
+    time: "1pm",
+    interview: {
+      student: "Lydia Miller-Jones",
+      interviewer: {
+        id: 1,
+        name: "Sylvia Palmer",
+        avatar: "https://i.imgur.com/LpaY82x.png",
+      }
+    }
+  },
+  {
+    id: 3,
+    time: "2pm",
+    interview: {
+      student: "David Claveau",
+      interviewer: {
+        id: 1,
+        name: "Sven Jones",
+        avatar: "https://i.imgur.com/twYrpay.jpg",
+      }
+    }
+  },
+  {
+    id: 4,
+    time: "3pm"
+  },
+  {
+    id: 5,
+    time: "4pm",
+    interview: {
+      student: "Caitlin Ing",
+      interviewer: {
+        id: 2,
+        name: "Tori Malcolm",
+        avatar: "https://i.imgur.com/Nmx0Qxo.png",
+      }
+    }
+  }
+
+];
 export default function Application(props) {
   const [day, setDay] = useState("Monday");
+  const appointmentList = appointments.map(appointment => {
+    return (
+      <Appointment
+        key={appointment.id}
+        {...appointment}
+      />
+    );
+  })
 
   return (
 
@@ -35,7 +91,7 @@ export default function Application(props) {
         <nav className="sidebar__menu">
           <DayList
             days={days}
-            value={day}
+            day={day}
             onChange={setDay}
           // setDay={day => console.log(day)}
           />
@@ -48,7 +104,8 @@ export default function Application(props) {
         {/* Replace this with the sidebar elements during the "Project Setup & Familiarity" activity. */}
       </section>
       <section className="schedule">
-        {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
+        {appointmentList}
+        < Appointment key="last" time="5pm" />
       </section>
     </main>
   );
