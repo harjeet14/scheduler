@@ -1,9 +1,10 @@
 import React from "react";
-import DayList from "./DayList";
+import DayList from "components/DayList";
 import "components/Application.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Appointment from "components/Appointment"
+import Appointment from "components/Appointment";
+import { getAppointmentsForDay } from "helpers/selectors";
 // const days = [
 //   {
 //     id: 1,
@@ -14,63 +15,72 @@ import Appointment from "components/Appointment"
 //     id: 2,
 //     name: "Tuesday",
 //     spots: 5,
-//   },
+//   }, 
 //   {`
 //     id: 3,
 //     name: "Wednesday",
 //     spots: 0,
 //   },
 // ];
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time: "2pm",
-    interview: {
-      student: "David Claveau",
-      interviewer: {
-        id: 1,
-        name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg",
-      }
-    }
-  },
-  {
-    id: 4,
-    time: "3pm"
-  },
-  {
-    id: 5,
-    time: "4pm",
-    interview: {
-      student: "Caitlin Ing",
-      interviewer: {
-        id: 2,
-        name: "Tori Malcolm",
-        avatar: "https://i.imgur.com/Nmx0Qxo.png",
-      }
-    }
-  }
+// const appointments = [
+//   {
+//     id: 1,
+//     time: "12pm",
+//   },
+//   {
+//     id: 2,
+//     time: "1pm",
+//     interview: {
+//       student: "Lydia Miller-Jones",
+//       interviewer: {
+//         id: 1,
+//   name: "Sylvia Palmer",
+//   avatar: "https://i.imgur.com/LpaY82x.png",
+// }
+//   }
+// },
+// {
+//   id: 3,
+//   time: "2pm",
+//   interview: {
+//     student: "David Claveau",
+//     interviewer: {
+//       id: 1,
+//       name: "Sven Jones",
+//       avatar: "https://i.imgur.com/twYrpay.jpg",
+//     }
+//   }
+// },
+//   {
+//     id: 4,
+//     time: "3pm"
+//   },
+//   {
+//     id: 5,
+//     time: "4pm",
+//     interview: {
+//       student: "Caitlin Ing",
+//       interviewer: {
+//         id: 2,
+//         name: "Tori Malcolm",
+//         avatar: "https://i.imgur.com/Nmx0Qxo.png",
+//       }
+//     }
+//   }
 
-];
-export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  const [days, setDays] = useState([]);
+// ];
+export default function Application() {
+  // const [day, setDay] = useState("Monday");
+  // const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {}
+  });
+  // const dailyAppointments = [];
+  const setDay = day => setState({ ...state, day });
+  // const setDays = days => setState(prev => ({ ...prev, days }));
+  const appointments = getAppointmentsForDay(state, state.day);
   const appointmentList = appointments.map(appointment => {
     return (
       <Appointment
@@ -79,16 +89,31 @@ export default function Application(props) {
       />
     );
   })
+
+  axios.get("/api/days")
+    .then(res => {
+      console.log("something inside funmction");
+    })
+
   useEffect(() => {
+    console.log("use:");
 
-    axios.get('http://localhost:8001/api/days')
-      .then((response) => {
-        setDays(response.data)// handle success
-        console.log(response.data);
-      })
-    //axios request here...
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments")
+    ])
+      .then(response => {
+        console.log(`response 0 ${response[0]}`);
+        console.log(`response 1 ${response[1]}`);
+        setState(prev => ({
+          ...prev,
+          days: response[0].data,
+          appointments: response[1].data
+
+        }))
+
+      });
   }, [])
-
   return (
 
     <main className="layout">
@@ -101,10 +126,9 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={days}
-            day={day}
-            onChange={setDay}
-          // setDay={day => console.log(day)}
+            days={state.days}
+            day={state.day}
+            setDay={setDay}
           />
         </nav>
         <img
