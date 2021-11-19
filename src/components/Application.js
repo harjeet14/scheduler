@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay } from "helpers/selectors";
+import { getInterview } from "helpers/selectors";
 // const days = [
 //   {
 //     id: 1,
@@ -75,17 +76,23 @@ export default function Application() {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
   // const dailyAppointments = [];
   const setDay = day => setState({ ...state, day });
   // const setDays = days => setState(prev => ({ ...prev, days }));
   const appointments = getAppointmentsForDay(state, state.day);
   const appointmentList = appointments.map(appointment => {
+    const interview = getInterview(state, appointment.interview);
     return (
       <Appointment
+        // key={appointment.id}
+        // {...appointment}
         key={appointment.id}
-        {...appointment}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
       />
     );
   })
@@ -100,7 +107,8 @@ export default function Application() {
 
     Promise.all([
       axios.get("/api/days"),
-      axios.get("/api/appointments")
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers")
     ])
       .then(response => {
         console.log(`response 0 ${response[0]}`);
@@ -108,7 +116,8 @@ export default function Application() {
         setState(prev => ({
           ...prev,
           days: response[0].data,
-          appointments: response[1].data
+          appointments: response[1].data,
+          interviewers: response[2].data
 
         }))
 
