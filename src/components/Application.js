@@ -96,7 +96,7 @@ export default function Application() {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
-        interviews={interviewerForDay}
+        interviewers={interviewerForDay}
       />
     );
   })
