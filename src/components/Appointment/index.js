@@ -6,10 +6,15 @@ import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Form from './Form';
 import Status from './Status';
+import Confirm from './Confirm';
+
+
 const EMPTY = 'EMPTY';
 const SHOW = 'SHOW';
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const CONFIRM = "CONFIRM";
+const DELETE = "DELETE";
 
 export default function Appointment(props) {
   const { mode, transition, back } =
@@ -24,20 +29,33 @@ export default function Appointment(props) {
     transition(SAVING);
     props.bookInterview(props.id, interview).then(() => transition(SHOW));
   };
+  const confirmDelete = () => {
+    transition(CONFIRM);
+  };
 
-  // let appResult = `${!props.time ? "no appointment" : "Appointment at 12pm"}`
+  const deleteInterview = () => {
+    transition(DELETE);
+    props.cancelInterview(props.id).then(() => transition(EMPTY));
+  };
+
   return <article className="appointment">
-    {/* <Header time={props.time} />
-    {props.interview ? <Show
-      student={props.interview.student}
-      interviewer={props.interview.interviewer} /> :
-      <Empty />
-    } */}
+
     {props.time && <Header time={props.time} />}
     {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-    {mode === SHOW && <Show {...props.interview} />}
+    {mode === SHOW && <Show
+      student={props.interview.student}
+      interviewer={props.interview.interviewer}
+      onDelete={confirmDelete}
+    />}
     {mode === CREATE && <Form interviewers={props.interviewers} onCancel={() => back(EMPTY)} onSave={save} />}
-    {mode === SAVING && <Status message="saving" />}
+    {mode === SAVING && <Status message="SAVING" />}
+    {mode === DELETE && <Status message="DELETING" />}
+    {mode === CONFIRM && (
+      <Confirm
+        message="Are you sure you would like to delete?"
+        onConfirm={deleteInterview}
+      />
+    )}
   </article>
 
 };
