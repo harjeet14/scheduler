@@ -18,10 +18,12 @@ const DELETE = "DELETE";
 const EDIT = "EDIT";
 const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
-
+//display all appointments
 export default function Appointment(props) {
+  //if appoinment is booked, display appointment otherwise empty
   const { mode, transition, back } =
     useVisualMode(props.interview ? SHOW : EMPTY);
+  //save func pass interview data to the bookInterview function
   function save(name, interviewer) {
 
     const interview = {
@@ -62,6 +64,7 @@ export default function Appointment(props) {
       onDelete={confirmDelete}
       onEdit={editInterview}
     />}
+    {/* show the empty form to create appointment */}
     {mode === CREATE && <Form interviewers={props.interviewers} onCancel={() => back(EMPTY)} onSave={save} />}
     {mode === EDIT && (<Form
       name={props.interview.student}
@@ -70,6 +73,7 @@ export default function Appointment(props) {
       onSave={save}
       onCancel={back}
     />)}
+    {/* show the pre-filled form to edit the appointment */}
     {mode === SAVING && <Status message="SAVING" />}
     {mode === DELETE && <Status message="DELETING" />}
     {mode === CONFIRM && (
