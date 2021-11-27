@@ -6,11 +6,11 @@ import Button from "components/Button";
 export default function Form(props) {
   const [name, setName] = useState(props.name || "")
   const [interviewer, setInterviewer] = useState(props.interviewer || null)
-  // const reset = () => {
-  //   setName("");
-  //   setInterviewer(null);
+  const reset = () => {
+    setName("");
+    setInterviewer(null);
 
-  // }
+  }
   const cancel = () => {
     props.onCancel();
   }
