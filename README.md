@@ -1,4 +1,7 @@
 # Interview Scheduler
+Interview Scheduler is a single-page application (SPA) build using react that allows users to book technical interviews between students and mentors.
+
+# Create appointments
 
 ## Setup
 
