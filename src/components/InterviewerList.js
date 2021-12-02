@@ -27,7 +27,7 @@ export default function InterviewerList(props) {
   </section>
 }
 InterviewerList.propTypes = {
-  interviewers: PropTypes.func.isRequired
+  interviewers: PropTypes.array.isRequired
 };
 
 
