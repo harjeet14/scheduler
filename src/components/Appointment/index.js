@@ -53,7 +53,7 @@ export default function Appointment(props) {
   const editInterview = () => {
     transition(EDIT);
   }
-
+  // console.log(`props.interview.interviewer: ${props.interview.interviewer}`);
   return <article className="appointment">
 
     {props.time && <Header time={props.time} />}

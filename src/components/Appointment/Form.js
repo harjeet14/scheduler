@@ -10,9 +10,9 @@ export default function Form(props) {
   const reset = () => {
     setName("");
     setInterviewer(null);
-
   }
   const cancel = () => {
+    reset();
     props.onCancel();
   }
   // const save = () => {
@@ -23,7 +23,7 @@ export default function Form(props) {
       setError("Student name cannot be blank");
       return;
     }
-
+    setError("");
     props.onSave(name, interviewer);
   }
   return <main className="appointment__card appointment__card--show">
@@ -31,7 +31,7 @@ export default function Form(props) {
       <form onSubmit={event => event.preventDefault()} autoComplete="off">
         <input
           className="appointment__create-input text--semi-bold"
-          name="student"
+          name="name"
           type="text"
           placeholder="Enter Student Name"
           value={name}
