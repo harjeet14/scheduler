@@ -54,7 +54,8 @@ export default function Appointment(props) {
     transition(EDIT);
   }
   // console.log(`props.interview.interviewer: ${props.interview.interviewer}`);
-  return <article className="appointment">
+  return <article className="appointment"
+    data-testid="appointment" >
 
     {props.time && <Header time={props.time} />}
     {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
@@ -89,6 +90,7 @@ export default function Appointment(props) {
     {mode === ERROR_SAVE && (
       <Error message="Could not save appointment" onClose={back} />
     )}
+
   </article>
 
 };

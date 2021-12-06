@@ -77,5 +77,25 @@ export default {
         data: fixtures.interviewers
       })/* Resolve interviewers data */
     }
+  }),
+
+  put: jest.fn(url => {
+
+    if (url === "/api/appointments/1") {
+      return Promise.resolve({
+        status: 204,
+        statusText: "No Content"
+      })/* Resolve appointments data */
+    }
+    if (url === "/api/interviewers/1") {
+      return Promise.resolve({
+        status: 204, statusText: "No Content"
+      })/* Resolve appointments data */
+    }
+    if (url === "/api/days/1") {
+      return Promise.resolve({
+        status: 204, statusText: "No Content"
+      })/* Resolve appointments data */
+    }
   })
 }
