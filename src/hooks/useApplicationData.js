@@ -27,9 +27,7 @@ export default function useApplicationData() {
   const setDay = (day) => setState({ ...state, day });
 
   const bookInterview = (id, interview) => {
-    console.log(`id: ${id}`);
-    console.log(`interview: ${JSON.stringify(interview)}`);
-    console.log(`state: ${JSON.stringify(state)}}`);
+
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },

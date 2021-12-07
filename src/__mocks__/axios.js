@@ -87,6 +87,31 @@ export default {
         statusText: "No Content"
       })/* Resolve appointments data */
     }
+    if (url === "/api/appointments/2") {
+      return Promise.resolve({
+        status: 204,
+        statusText: "No Content"
+      })/* Resolve appointments data */
+    }
+    if (url === "/api/interviewers/1") {
+      return Promise.resolve({
+        status: 204, statusText: "No Content"
+      })/* Resolve appointments data */
+    }
+    if (url === "/api/days/1") {
+      return Promise.resolve({
+        status: 204, statusText: "No Content"
+      })/* Resolve appointments data */
+    }
+  }),
+  delete: jest.fn(url => {
+
+    if (url === "/api/appointments/2") {
+      return Promise.resolve({
+        status: 204,
+        statusText: "No Content"
+      })/* Resolve appointments data */
+    }
     if (url === "/api/interviewers/1") {
       return Promise.resolve({
         status: 204, statusText: "No Content"
